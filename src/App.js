@@ -1,8 +1,10 @@
 import React from 'react';
 import MonthComponent from './components/MonthComponent';
 import DayLabels from './components/DaysLabelComponent'
+import transactions from './transactions'
+import { months, sortTransactionByMonth } from './helper/transactionHelper'
 
-class App extends React.Component {
+class App extends React.Component { 
 
   buildYearGraph() {
     const months = []
