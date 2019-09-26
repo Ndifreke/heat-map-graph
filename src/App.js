@@ -2,16 +2,27 @@ import React from 'react';
 import MonthComponent from './components/MonthComponent';
 import DayLabels from './components/DaysLabelComponent'
 import transactions from './transactions'
-import { months, sortTransactionByMonth } from './helper/transactionHelper'
+import { monthNames, sortTransactionByMonth } from './helper/transactionHelper'
 
-class App extends React.Component { 
+class App extends React.Component {
 
   buildYearGraph() {
-    const months = []
-    for (const month in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
-      months.push(<MonthComponent month={month} />)
+    const monthGraph = []
+    const transactionData = sortTransactionByMonth(transactions)
+    for (const monthName in transactionData) {
+      console.log(monthName)
+      const monthData = transactionData[monthName]
+      monthGraph.push(
+        <MonthComponent
+          monthTransaction={monthData}
+          monthName={monthName}
+          monthNumber={monthNames[monthName]}
+          key={monthName}
+        />
+      )
+      break
     }
-    return months
+    return monthGraph
   }
 
   render() {
