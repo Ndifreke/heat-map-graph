@@ -1,10 +1,23 @@
 import React from 'react';
 import DayComponent from './DayComponent'
+import { getDaysInYear } from 'date-fns/esm';
+import { getDayOfYear, isSameDay } from 'date-fns';
+import uuid from 'uuid'
 
-function filterDayTransaction(day, weekData) {
-    return weekData.filter(data => {
-        return new Date(data.date).getDay() === day
-    })
+const MAX_WEEK_DAYS = 7
+
+function filterTransactionByDay(day, weekData) {
+    const result = { samedays: [] }
+    for (const transaction of weekData) {
+        if (getDayOfYear(new Date(transaction.date)) == day) {
+            result.samedays.push(transaction)
+            continue
+        }
+        break
+    }
+    const offset = weekData.slice(result.samedays.length)
+    result.transactions = offset
+    return result;
 }
 
 function getTileColor(totalDayTransaction) {
@@ -13,7 +26,7 @@ function getTileColor(totalDayTransaction) {
     const colors = 3
 }
 
-function calculateValue(dayData) {
+function calculateDayTransaction(dayData) {
     return dayData.reduce((accum, next) => {
         switch (next.transactionType) {
             case "debit": accum.debit++
@@ -23,19 +36,45 @@ function calculateValue(dayData) {
     }, { credit: 0, debit: 0 })
 }
 
-function WeekComponent(props) {
-    const weekList = []
-    const { weekData, weekID } = props //{week1:[],week2:[]}
-    // console.log(weekData)
-    for (const day in [1, 2, 3, 4, 5, 6, 7]) {
-        console.log(filterDayTransaction(day + 1, weekData))
-        weekList.push(
-            <li key={day}>
-                <DayComponent />
-            </li>
-        )
-    }
-    return (<ul style={{ listStyle: "none" }}>{weekList}</ul>)
+function addDay(dayData, title) {
+    return (
+        <li key={uuid()} title={title}>
+            <DayComponent data={dayData} />
+        </li>
+    )
 }
 
-export default WeekComponent
+function getMonth(day) {
+
+}
+
+function WeekComponent(props) {
+    const weekList = ["", ""]
+    let dayList = []
+    let { transactions } = props
+    let dayData
+    const daysInYear = getDaysInYear(new Date(transactions[0].date))
+    for (let day = 1, weekDay = 1; day < daysInYear; day++ , weekDay++) {
+        const dayFilter = filterTransactionByDay(day, transactions)
+        transactions = dayFilter.transactions
+        const value = calculateDayTransaction(dayFilter.samedays)
+        if (dayFilter.samedays[0]) {
+            dayData = addDay(value, new Date(dayFilter.samedays[0].date).toDateString())
+        } else {
+            dayData = addDay({ credit: 0, debit: 0 }, "No imformation")
+        }
+        dayList.push(dayData)
+        if (weekDay == MAX_WEEK_DAYS) {
+            weekList.push(
+                <ul style={{ listStyle: "none" }} key={Date.now()}>
+                    {dayList}
+                </ul >
+            )
+            dayList = []
+            weekDay = 0
+        }
+    }
+    return weekList
+}
+
+export { MAX_WEEK_DAYS, WeekComponent } 

@@ -2,6 +2,7 @@ import React from "react"
 import WeekComponent from './WeekComponent'
 import { months } from '../helper/transactionHelper'
 import getWeek from 'date-fns/getWeekOfMonth'
+import uuid from 'uuid'
 
 class MonthComponent extends React.Component {
 
@@ -31,17 +32,9 @@ class MonthComponent extends React.Component {
        for (const week in [1, 2, 3, 4,5]) { 
            const weekID = (Number(week)+1)+"week" 
          //  console.log(weekData)
-            monthData.push(<WeekComponent  weekData={weekData[weekID]} week={weekID} key={week} />)
+            monthData.push(<WeekComponent  weekData={weekData[weekID]} week={weekID} key={uuid()} />)
        }
         return monthData
-    }
-
-    monthAbr(id) { 
-        return {
-            0: "Jan", 1: "Feb", 2: "Mar", 3: "Apr", 4: "May",
-            5: "Jun", 6: "Jul", 7: "Aug", 8: "Sep", 9: "Oct",
-            10: "Nov", 11: "Dec"
-        }[id]
     }
 
     render() {
