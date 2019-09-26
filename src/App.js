@@ -1,35 +1,34 @@
 import React from 'react';
-import MonthComponent from './components/MonthComponent';
-import DayLabels from './components/DaysLabelComponent'
-import transactions from './transactions'
-import { monthNames, sortTransactionByMonth } from './helper/transactionHelper'
+import { WeekComponent } from './components/WeekComponent';
+import WeekDaysLabel from './components/WeekDaysLabel'
+import dump from './transactions'
+import { transactionData } from './helper/transactionHelper'
 
 class App extends React.Component {
-
-  buildYearGraph() {
-    const monthGraph = []
-    const transactionData = sortTransactionByMonth(transactions)
-    for (const monthName in transactionData) {
-      console.log(monthName)
-      const monthData = transactionData[monthName]
-      monthGraph.push(
-        <MonthComponent
-          monthTransaction={monthData}
-          monthName={monthName}
-          monthNumber={monthNames[monthName]}
-          key={monthName}
-        />
-      )
-      break
+  constructor(props) {
+    super(props)
+    this.state = {
+      transactions: [],
+      firstYearDate: new Date()
     }
-    return monthGraph
+  }
+
+  static buildYearGraph() {
+    const transactions = transactionData(dump)
+    return { transactions, firstYearDate: new Date(transactions[0].date) }
+  }
+
+  static getDerivedStateFromProps() {
+    return App.buildYearGraph();
   }
 
   render() {
+    const { transactions, firstYearDate } = this.state
+    console.log(this.state)
     return (
       <div style={{ display: "flex" }}>
-        <DayLabels />
-        {this.buildYearGraph()}
+        <WeekDaysLabel firstYearDate={firstYearDate} />
+        <WeekComponent transactions={transactions} />
       </div>
 
     );

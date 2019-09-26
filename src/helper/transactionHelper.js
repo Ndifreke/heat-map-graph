@@ -29,20 +29,10 @@ const monthName = {
     "december": 11
 }
 
-const sortTransactionByMonth = (transactionData) => {
-    const sortByMonth = {}
-    transactionData.forEach(transaction => {
-        const monthNumber = new Date(transaction.date).getMonth()
-        const monthName = months[monthNumber]
-        if (monthName in sortByMonth) {
-            sortByMonth[monthName].push(transaction)
-        } else {
-            sortByMonth[monthName] = [transaction]
-        }
-    })
-    return sortByMonth
+const transactionData = (transactionData) => {
+    return transactionData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 }
 
 exports.months = months
 exports.monthNames = monthName
-exports.sortTransactionByMonth = sortTransactionByMonth
+exports.transactionData = transactionData
