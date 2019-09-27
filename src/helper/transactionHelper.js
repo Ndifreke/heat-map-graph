@@ -30,7 +30,9 @@ const monthName = {
 }
 
 const transactionData = (transactionData) => {
-    return transactionData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    return transactionData.sort((a, b, c) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+    })
 }
 
 exports.months = months
