@@ -24,9 +24,11 @@ function getWeeksLabel(props) {
     for (let dayInWeek = firstYearDate.getDay() - 1, totalDays = 0; totalDays < 7; dayInWeek++ , totalDays++) {
         if (dayInWeek === WeekComponent.MAX_WEEK_DAYS) {
             dayInWeek = 0
+           // console.log(dayAbbr(dayInWeek))
             dayLabel.push(<li key={dayInWeek}>{dayAbbr(dayInWeek)}</li>)
         } else {
             dayLabel.push(<li key={dayInWeek}>{dayAbbr(dayInWeek)}</li>)
+           // console.log(dayAbbr(dayInWeek))
         }
     }
     return (
