@@ -8,17 +8,27 @@ import MonthComponent from './MonthComponent'
 const MAX_WEEK_DAYS = 7
 
 function filterTransactionByDay(day, weekData) {
-    const result = { dayTransactions: [] }
+    //const result = { dayTransactions: [] }
+    console.log(weekData)
+    const sec = { date: null, credit: 0, debit: 0, offset: 0 }
     for (const transaction of weekData) {
         if (getDayOfYear(new Date(transaction.date)) == day) {
-            result.dayTransactions.push(transaction)
+            // result.dayTransactions.push(transaction)
+            if (transaction.transactionType == "credit") {
+                sec.credit += transaction.amount
+            } else {
+                sec.debit += transaction.amount
+            }
+            sec.offset++
             continue
         }
         break
     }
-    const offset = weekData.slice(result.dayTransactions.length)
-    result.transactions = offset
-    return result;
+    const transactionOffset = weekData.slice(sec.offset)
+    sec.transactions = transactionOffset
+    sec.date = new Date(weekData[0].date)
+    //  result.transactions = transactionOffset
+    return sec;
 }
 
 function algol(highest, transaction = 0, day) {
@@ -90,15 +100,14 @@ function WeekComponent(props) {
     let dayData
     const daysInYear = getDaysInYear(firstDate(transactions))
     let month = getMonth(firstDate(transactions))
-    for (let day = 1, weekDay = 1; day < daysInYear; day++ , weekDay++) {
-        const sameDayFilter = filterTransactionByDay(day, transactions)
-        transactions = sameDayFilter.transactions
-        const value = calculateDayTransaction(sameDayFilter.dayTransactions)
-        const isTransaction = sameDayFilter.dayTransactions[0]
-        if (isTransaction) {
-            dayData = addDay(value, firstDate(sameDayFilter.dayTransactions).toDateString())
+    for (let day = 1, weekDay = 1; day < daysInYear && transactions.length > 0; day++ , weekDay++) {
+        const dayInformation = filterTransactionByDay(day, transactions)
+        transactions = dayInformation.transactions
+        const hasTransaction = dayInformation.date
+        if (hasTransaction) {
+            dayData = addDay(dayInformation)
         } else {
-            dayData = addDay({ credit: 0, debit: 0 }, "No imformation")
+           // dayData = addDay({ credit: 0, debit: 0 }, "No imformation")
         }
         dayList.push(dayData)
         if (weekDay == MAX_WEEK_DAYS) {
@@ -111,10 +120,10 @@ function WeekComponent(props) {
             weekDay = 0
         }
 
-        if (isTransaction && month != getMonth(new Date(isTransaction.date))) {
+        if (hasTransaction && month != getMonth(dayInformation.date)) {
             console.log(month)
             monthList.push(createMonthTransaction(weekList, month))
-            month = getMonth(new Date(isTransaction.date))
+            month = getMonth(new Date(hasTransaction.date))
             weekList = []
         }
     }
