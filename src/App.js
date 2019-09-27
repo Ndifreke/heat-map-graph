@@ -1,5 +1,5 @@
 import React from 'react';
-import { WeekComponent } from './components/WeekComponent';
+import  WeekComponent  from './components/WeekComponent';
 import WeekDaysLabel from './components/WeekDaysLabel'
 import dump from './transactions'
 import { transactionData } from './helper/transactionHelper'
@@ -13,20 +13,19 @@ class App extends React.Component {
     }
   }
 
-  static buildYearGraph() {
+  static buildGraph() {
     const transactions = transactionData(dump)
     return { transactions, firstYearDate: new Date(transactions[0].date) }
   }
 
   static getDerivedStateFromProps() {
-    return App.buildYearGraph();
+    return App.buildGraph();
   }
 
   render() {
     const { transactions, firstYearDate } = this.state
-    console.log(this.state)
     return (
-      <div style={{ display: "flex" }}>
+      <div className="graph-container">
         <WeekDaysLabel firstYearDate={firstYearDate} />
         <WeekComponent transactions={transactions} />
       </div>
