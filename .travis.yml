@@ -4,7 +4,7 @@ nodejs:
 install:
   - npm install
 script:
-- npm run ci:test
+- npm run ci:test  -- --coverage
 - bash <(curl -s https://codecov.io/bash)
 #- npm run coveralls
 

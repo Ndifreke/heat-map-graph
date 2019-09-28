@@ -16,7 +16,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "pretest": "react-scripts test",
-    "test": "npm run pretest -- --coverage",
+    "test": "npm run pretest -- --coverage --watchAll",
     "eject": "react-scripts eject",
     "ci:test": "CI=true react-scripts test"
   },
