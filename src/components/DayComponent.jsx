@@ -10,7 +10,13 @@ export const COLOR_RANGE = {
 
 class DayComponent extends React.Component {
 
-    calculateGraphColor(credit, debit = 0) {
+    /**
+     * Determine the color that will be appended to each day data
+     * @param {Number} credit sum of credits for this day
+     * @param {*} debit sum of debit for this day
+     * @param {*} peakTransaction  the highest transaction for the year
+     */
+    calculateGraphColor(credit, debit = 0, peakTransaction) {
         const average = (credit + debit) / 2
         let style = COLOR_RANGE.neutral
         if (debit < (average / 2)) {
@@ -26,11 +32,11 @@ class DayComponent extends React.Component {
     }
 
     render() {
-        const { credit, debit, date, key } = this.props
+        const { credit, debit, date } = this.props
         const { style } = this.calculateGraphColor(credit, debit)
         const title = `${date.toDateString()} $${(credit + debit).toFixed(2)}`
         return (
-            <li key={key} title={title}>
+            <li title={title}> 
                 <span className="day-tile" style={style}></span>
             </li>
         )

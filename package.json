@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "babel": "^6.23.0",
-    "date-fns": "^2.3.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "jest": "^24.9.0",
+    "moment": "^2.24.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.2"
@@ -15,7 +15,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "pretest": "react-scripts test",
+    "test": "npm run pretest -- --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
