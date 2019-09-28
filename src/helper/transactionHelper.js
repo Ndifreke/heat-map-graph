@@ -23,7 +23,7 @@ export const dailyTransactionSum = (transaction) => {
     }, {})
 }
 
-export const highes= (dailyTransactionSum) => {
+export const peakTransaction = (dailyTransactionSum) => {
     let high = 0
     for (const dates in dailyTransactionSum) {
         high = dailyTransactionSum[dates] >= high ? dailyTransactionSum[dates] : high
@@ -41,22 +41,16 @@ export const highes= (dailyTransactionSum) => {
  * @returns {Array} returns a slice transaction Array not matching the day
  */
 export const filterTransactionByDayOfYear = (day, transactions) => {
-    const details = { date: null, credit: 0, debit: 0, offset: 0 }
+    const details = { date: transactions[0].date }
+    let offset = 0
     for (const transaction of transactions) {
         if (moment(new Date(transaction.date)).dayOfYear() === day) {
-            if (transaction.transactionType === "credit") {
-                details.credit += transaction.amount
-            } else {
-                details.debit += transaction.amount
-            }
-            details.offset++
+            offset++
             continue
         }
         break
     }
-    const transactionOffset = transactions.slice(details.offset)
-    details.transactions = transactionOffset
-    details.date = new Date(transactions[0].date)
+    details.transactions = transactions.slice(offset)
     return details;
 }
 
