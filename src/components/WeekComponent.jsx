@@ -2,7 +2,7 @@ import React from 'react';
 import DayComponent from './DayComponent'
 import uuidv1 from 'uuid/v1'
 import MonthComponent from './MonthComponent'
-import { filterTransactionByDayOfYear } from '../helper/transactionHelper'
+import { filterTransactionByDayOfYear, peakTransaction } from '../helper/transactionHelper'
 
 const MAX_WEEK_DAYS = 7
 
@@ -44,28 +44,38 @@ class WeekComponent extends React.Component {
         let weekList = []
         let dayList = []
         const monthList = []
-        let { transactions, dailyAmount } = props
+        let { transactions, dailyAmounts } = props
+        const peakTransac = peakTransaction(dailyAmounts)
 
-        let month = this.getMonth(this.firstDate(transactions))
+        let previousMonth = this.getMonth(this.firstDate(transactions))
 
         for (let day = 1; transactions.length > 0; day++) {
             const dayInformation = filterTransactionByDayOfYear(day, transactions)
+            const currentDay = new Date(dayInformation.date)
+            const currentMonth = this.getMonth(currentDay)
             transactions = dayInformation.transactions
             const hasTransaction = dayInformation.date
 
-            dayList.push(<DayComponent {...dayInformation} key={uuidv1()} />)
+            dayList.push(
+                <DayComponent
+                    date={dayInformation.date}
+                    peakTransaction={peakTransac}
+                    dailyAmounts={dailyAmounts}
+                    key={uuidv1()}
+                />
+            )
 
             if (dayList.length === MAX_WEEK_DAYS) {
                 weekList.push(this.addDaysToWeekGraph(dayList))
                 dayList = []
-            } if (hasTransaction && month !== this.getMonth(dayInformation.date)) {
-                monthList.push(<MonthComponent weekTransaction={weekList} monthId={month} key={uuidv1()} />)
-                month = this.getMonth(dayInformation.date)
+            } if (hasTransaction && previousMonth !== currentMonth) {
+                monthList.push(<MonthComponent weekTransaction={weekList} monthId={previousMonth} key={uuidv1()} />)
+                previousMonth = currentMonth
                 weekList = []
             }
         }
         weekList.push(this.addDaysToWeekGraph(dayList))
-        monthList.push(<MonthComponent weekTransaction={weekList} monthId={month} key={uuidv1()} />)
+        monthList.push(<MonthComponent weekTransaction={weekList} monthId={previousMonth} key={uuidv1()} />)
         return monthList
     }
 
