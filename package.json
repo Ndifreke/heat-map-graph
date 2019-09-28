@@ -17,7 +17,8 @@
     "build": "react-scripts build",
     "pretest": "react-scripts test",
     "test": "npm run pretest -- --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "ci:test": "CI=true react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
