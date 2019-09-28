@@ -10,7 +10,7 @@ class App extends React.Component {
     this.state = {
       transactions: [],
       firstYearDate: new Date(),
-      dailyAmount: {}
+      dailyAmounts: {}
     }
   }
 
@@ -28,16 +28,16 @@ class App extends React.Component {
 
   static getDerivedStateFromProps() {
     const { transactions, firstYearDate } = App.buildGraph()
-    const dailyAmount = dailyTransactionSum(transactions)
-    return { transactions, firstYearDate, dailyAmount };
+    const dailyAmounts = dailyTransactionSum(transactions)
+    return { transactions, firstYearDate, dailyAmounts };
   }
 
   render() {
-    const { transactions, firstYearDate, dailyAmount } = this.state
+    const { transactions, firstYearDate, dailyAmounts } = this.state
     return (
       <div className="graph-container">
         <WeekDaysLabel firstYearDate={firstYearDate} />
-        <WeekComponent transactions={transactions} dailyAmount={dailyAmount} />
+        <WeekComponent transactions={transactions} dailyAmounts={dailyAmounts} />
       </div>
 
     );
