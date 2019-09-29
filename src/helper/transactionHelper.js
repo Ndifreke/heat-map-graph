@@ -53,5 +53,3 @@ export const filterTransactionByDayOfYear = (day, transactions) => {
     details.transactions = transactions.slice(offset)
     return details;
 }
-
-

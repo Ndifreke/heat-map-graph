@@ -2,6 +2,7 @@
   "name": "carter-test",
   "version": "0.1.0",
   "private": true,
+  "url":"https://github.com/Ndifreke/heat-map-graph",
   "dependencies": {
     "babel": "^6.23.0",
     "enzyme": "^3.10.0",
