@@ -2,7 +2,6 @@ import React from "react"
 
 class MonthComponent extends React.Component {
 
-
     monthName(monthId) {
        return  {
             0: "Jan", 1: "Feb", 2: "Mar", 3: "Apr", 4: "May",
