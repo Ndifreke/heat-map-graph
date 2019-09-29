@@ -15,10 +15,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "pretest": "react-scripts test",
+    "pretest": "react-scripts test --testPathIgnorePatterns=src/serviceWorker.js",
     "test": "npm run pretest -- --coverage --watchAll",
     "eject": "react-scripts eject",
-    "ci:test": "CI=true react-scripts test"
+    "ci:test": "CI=true react-scripts test --testPathIgnorePatterns=src/serviceWorker.js"
   },
   "eslintConfig": {
     "extends": "react-app"
