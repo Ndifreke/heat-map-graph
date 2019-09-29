@@ -1,3 +1,7 @@
+[![Coverage Status](https://coveralls.io/repos/github/Ndifreke/heat-map-graph/badge.svg?branch=master)](https://coveralls.io/github/Ndifreke/heat-map-graph?branch=master)
+[![Build Status](https://travis-ci.org/Ndifreke/heat-map-graph.svg?branch=master)](https://travis-ci.org/Ndifreke/heat-map-graph)
+[![codecov](https://codecov.io/gh/Ndifreke/heat-map-graph/branch/master/graph/badge.svg)](https://codecov.io/gh/Ndifreke/heat-map-graph)
+[![Maintainability](https://api.codeclimate.com/v1/badges/efea203809f468f7c0f3/maintainability)](https://codeclimate.com/github/Ndifreke/heat-map-graph/maintainability)
 Heat Map Graph is a web application built with React Application which replicates the Github repository activity Graph. It uses a transaction file located in `/transactions` as it source of input which contains 9999 Arrays of daily transaction object to be filtered, sorted and rendered.
 ##
 Every tile of the Graph contains information about the day such as the total sum of credit and debit transactions that happened on this day
